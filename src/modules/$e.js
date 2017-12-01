@@ -9,6 +9,10 @@ const $e = function (parameter, context) {
     return new $e(parameter, context);
   }
 
+  if (parameter instanceof HTMLElement) {
+    return parameter;
+  }
+
   // Allow for spaces before or after
   parameter = parameter.replace(/^\s*/, '').replace(/\s*$/, '');
 
