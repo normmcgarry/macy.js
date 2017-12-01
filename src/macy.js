@@ -87,8 +87,6 @@ Macy.prototype.recalculate = function (refresh = false, loaded = true) {
  * Destroys macy instance
  */
 Macy.prototype.remove = function () {
-  window.removeEventListener('resize', this.resizer);
-
   foreach(this.container.children, (child) => {
     child.removeAttribute('data-macy-complete');
     child.removeAttribute('style');
@@ -103,7 +101,6 @@ Macy.prototype.remove = function () {
 Macy.prototype.reInit = function () {
   this.recalculate(true, true);
   this.emit(this.constants.EVENT_INITIALIZED);
-  window.addEventListener('resize', this.resizer);
   this.container.style.position = 'relative';
 };
 
@@ -114,6 +111,24 @@ Macy.prototype.reInit = function () {
  */
 Macy.prototype.on = function (key, func) {
   this.events.on(key, func);
+};
+
+/**
+ * Event listener for macy events
+ * @param key {String} - Event name to remove
+ * @param func {Function} - Function that was added
+ */
+Macy.prototype.off = function (key, func) {
+  this.events.off(key, func);
+};
+
+/**
+ * Event listener for macy events only once!
+ * @param key {String} - Event name to listen to
+ * @param func {Function} - Function to be called when event happens
+ */
+Macy.prototype.once = function (key, func) {
+  this.events.once(key, func);
 };
 
 /**

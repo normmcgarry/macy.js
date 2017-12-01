@@ -1,1 +1,1041 @@
-!function(t,n){"object"==typeof exports&&"undefined"!=typeof module?module.exports=n():"function"==typeof define&&define.amd?define(n):t.Macy=n()}(this,function(){"use strict";function t(t,n){var e=void 0;return function(){e&&clearTimeout(e),e=setTimeout(t,n)}}function n(t,n){for(var e=t.length,o=e,r=[];e--;)r.push(n(t[o-e-1]));return r}function e(t,n){var e=arguments.length>2&&void 0!==arguments[2]&&arguments[2];A(t,n,e)}function o(t){for(var n=t.options,e=t.responsiveOptions,o=t.keys,r=t.docWidth,i=void 0,s=0;s<o.length;s++){var a=parseInt(o[s],10);r>=a&&(i=n.breakAt[a],O(i,e))}return e}function r(t){for(var n=t.options,e=t.responsiveOptions,o=t.keys,r=t.docWidth,i=void 0,s=o.length-1;s>=0;s--){var a=parseInt(o[s],10);r<=a&&(i=n.breakAt[a],O(i,e))}return e}function i(t){var n=document.body.clientWidth,e={columns:t.columns};_(t.margin)?e.margin={x:t.margin.x,y:t.margin.y}:e.margin={x:t.margin,y:t.margin};var i=Object.keys(t.breakAt);return t.mobileFirst?o({options:t,responsiveOptions:e,keys:i,docWidth:n}):r({options:t,responsiveOptions:e,keys:i,docWidth:n})}function s(t){return i(t).columns}function a(t){return i(t).margin}function c(t){var n=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],e=s(t),o=a(t).x,r=100/e;return n?1===e?"100%":(o=(e-1)*o/e,"calc("+r+"% - "+o+"px)"):r}function u(t,n){var e=s(t.options),o=0,r=void 0,i=void 0;return 1===++n?0:(i=a(t.options).x,r=(i-(e-1)*i/e)*(n-1),o+=c(t.options,!1)*(n-1),"calc("+o+"% + "+r+"px)")}function l(t){var n=0,e=t.container,o=t.rows;v(o,function(t){n=t>n?t:n}),e.style.height=n+"px"}function h(t,n){var e=arguments.length>2&&void 0!==arguments[2]&&arguments[2],o=!(arguments.length>3&&void 0!==arguments[3])||arguments[3],r=s(t.options),i=a(t.options).y;C(t,r,e),v(n,function(n){var e=0,r=parseInt(n.offsetHeight,10);isNaN(r)||(t.rows.forEach(function(n,o){n<t.rows[e]&&(e=o)}),n.style.position="absolute",n.style.top=t.rows[e]+"px",n.style.left=""+t.cols[e],t.rows[e]+=isNaN(r)?0:r+i,o&&(n.dataset.macyComplete=1))}),o&&(t.tmpRows=null),l(t)}function p(t,n){var e=arguments.length>2&&void 0!==arguments[2]&&arguments[2],o=!(arguments.length>3&&void 0!==arguments[3])||arguments[3],r=s(t.options),i=a(t.options).y;C(t,r,e),v(n,function(n){t.lastcol===r&&(t.lastcol=0);var e=M(n,"height");e=parseInt(n.offsetHeight,10),isNaN(e)||(n.style.position="absolute",n.style.top=t.rows[t.lastcol]+"px",n.style.left=""+t.cols[t.lastcol],t.rows[t.lastcol]+=isNaN(e)?0:e+i,t.lastcol+=1,o&&(n.dataset.macyComplete=1))}),o&&(t.tmpRows=null),l(t)}var f=function t(n,e){if(!(this instanceof t))return new t(n,e);if(n instanceof HTMLElement)return n;if(n=n.replace(/^\s*/,"").replace(/\s*$/,""),e)return this.byCss(n,e);for(var o in this.selectors)if(e=o.split("/"),new RegExp(e[1],e[2]).test(n))return this.selectors[o](n);return this.byCss(n)};f.prototype.byCss=function(t,n){return(n||document).querySelectorAll(t)},f.prototype.selectors={},f.prototype.selectors[/^\.[\w\-]+$/]=function(t){return document.getElementsByClassName(t.substring(1))},f.prototype.selectors[/^\w+$/]=function(t){return document.getElementsByTagName(t)},f.prototype.selectors[/^\#[\w\-]+$/]=function(t){return document.getElementById(t.substring(1))};var v=function(t,n){for(var e=t.length,o=e;e--;)n(t[o-e-1])},d=function(){var t=arguments.length>0&&void 0!==arguments[0]&&arguments[0];this.running=!1,this.events=[],this.add(t)};d.prototype.run=function(){if(!this.running&&this.events.length>0){var t=this.events.shift();this.running=!0,t(),this.running=!1,this.run()}},d.prototype.add=function(){var t=this,n=arguments.length>0&&void 0!==arguments[0]&&arguments[0];return!!n&&(Array.isArray(n)?v(n,function(n){return t.add(n)}):(this.events.push(n),void this.run()))},d.prototype.clear=function(){this.events=[]};var m=function(t){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};return this.instance=t,this.data=n,this},y=function(){var t=arguments.length>0&&void 0!==arguments[0]&&arguments[0];this.events={},this.once={},this.instance=t};y.prototype.on=function(){var t=arguments.length>0&&void 0!==arguments[0]&&arguments[0],n=arguments.length>1&&void 0!==arguments[1]&&arguments[1];return!(!t||!n)&&(Array.isArray(this.events[t])||(this.events[t]=[]),this.events[t].push(n))},y.prototype.off=function(){var t=arguments.length>0&&void 0!==arguments[0]&&arguments[0],n=arguments.length>1&&void 0!==arguments[1]&&arguments[1];if(!t||!n)return!1;Array.isArray(this.events[t])||(this.events[t]=[]);var e=this.events[t];if(void 0!==e){for(var o=-1,r=0,i=e.length;r<i&&-1===o;r++)e[r]===n&&(o=r);o>=0&&e.splice(o,1)}},y.prototype.once=function(){var t=arguments.length>0&&void 0!==arguments[0]&&arguments[0],n=arguments.length>1&&void 0!==arguments[1]&&arguments[1];return!(!t||!n)&&(Array.isArray(this.once[t])||(this.once[t]=[]),this.once[t].push(n))},y.prototype.emit=function(){var t=arguments.length>0&&void 0!==arguments[0]&&arguments[0],n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(!t||!Array.isArray(this.events[t]))return!1;var e=new m(this.instance,n);v(this.events[t],function(t){return t(e)}),v(this.once[t],function(t){return t(e)}),this.once[t]=[]};var g=function(t){return!("naturalHeight"in t&&t.naturalHeight+t.naturalWidth===0)||t.width+t.height!==0},E=function(t,n){var e=arguments.length>2&&void 0!==arguments[2]&&arguments[2];return new Promise(function(t,e){if(n.complete)return g(n)?t(n):e(n);n.addEventListener("load",function(){return g(n)?t(n):e(n)}),n.addEventListener("error",function(){return e(n)})}).then(function(n){e&&t.emit(t.constants.EVENT_IMAGE_LOAD,{img:n})}).catch(function(n){return t.emit(t.constants.EVENT_IMAGE_ERROR,{img:n})})},w=function(t,e){var o=arguments.length>2&&void 0!==arguments[2]&&arguments[2];return n(e,function(n){return E(t,n,o)})},A=function(t,n){var e=arguments.length>2&&void 0!==arguments[2]&&arguments[2];return Promise.all(w(t,n,e)).then(function(){t.emit(t.constants.EVENT_IMAGE_COMPLETE)})},I=function(n){return t(function(){n.emit(n.constants.EVENT_RESIZE),n.queue.add(function(){return n.recalculate(!0,!0)})},100)},T=function(t){if(t.container=f(t.options.container),t.container instanceof f||!t.container)return!!t.options.debug&&console.error("Error: Container not found");delete t.options.container,t.container.length&&(t.container=t.container[0]),t.container.style.position="relative"},N=function(t){t.queue=new d,t.events=new y(t),t.rows=[],t.resizer=I(t)},b=function(t){var n=f("img",t.container);window.addEventListener("resize",t.resizer),t.on(t.constants.EVENT_IMAGE_LOAD,function(){return t.recalculate(!1,!1)}),t.on(t.constants.EVENT_IMAGE_COMPLETE,function(){return t.recalculate(!0,!0)}),t.options.useOwnImageLoader||e(t,n,!t.options.waitForImages),t.emit(t.constants.EVENT_INITIALIZED)},L=function(t){T(t),N(t),b(t)},_=function(t){return t===Object(t)&&"[object Array]"!==Object.prototype.toString.call(t)},O=function(t,n){_(t)||(n.columns=t),_(t)&&t.columns&&(n.columns=t.columns),_(t)&&t.margin&&!_(t.margin)&&(n.margin={x:t.margin,y:t.margin}),_(t)&&t.margin&&_(t.margin)&&t.margin.x&&(n.margin.x=t.margin.x),_(t)&&t.margin&&_(t.margin)&&t.margin.y&&(n.margin.y=t.margin.y)},M=function(t,n){return window.getComputedStyle(t,null).getPropertyValue(n)},C=function(t,n){var e=arguments.length>2&&void 0!==arguments[2]&&arguments[2];if(t.lastcol||(t.lastcol=0),t.rows.length<1&&(e=!0),e){t.rows=[],t.cols=[],t.lastcol=0;for(var o=n-1;o>=0;o--)t.rows[o]=0,t.cols[o]=u(t,o)}else if(t.tmpRows){t.rows=[];for(var o=n-1;o>=0;o--)t.rows[o]=t.tmpRows[o]}else{t.tmpRows=[];for(var o=n-1;o>=0;o--)t.tmpRows[o]=t.rows[o]}},V=function(t){var n=arguments.length>1&&void 0!==arguments[1]&&arguments[1],e=!(arguments.length>2&&void 0!==arguments[2])||arguments[2],o=n?t.container.children:f(':scope > *:not([data-macy-complete="1"])',t.container),r=c(t.options);return v(o,function(t){n&&(t.dataset.macyComplete=0),t.style.width=r}),t.options.trueOrder?(p(t,o,n,e),t.emit(t.constants.EVENT_RECALCULATED)):(h(t,o,n,e),t.emit(t.constants.EVENT_RECALCULATED))},R=Object.assign||function(t){for(var n=1;n<arguments.length;n++){var e=arguments[n];for(var o in e)Object.prototype.hasOwnProperty.call(e,o)&&(t[o]=e[o])}return t},x={columns:4,margin:2,trueOrder:!1,waitForImages:!1,useImageLoader:!0,breakAt:{},useOwnImageLoader:!1,onInit:!1};!function(){try{document.createElement("a").querySelector(":scope *")}catch(t){!function(){function t(t){return function(e){if(e&&n.test(e)){var o=this.getAttribute("id");o||(this.id="q"+Math.floor(9e6*Math.random())+1e6),arguments[0]=e.replace(n,"#"+this.id);var r=t.apply(this,arguments);return null===o?this.removeAttribute("id"):o||(this.id=o),r}return t.apply(this,arguments)}}var n=/:scope\b/gi,e=t(Element.prototype.querySelector);Element.prototype.querySelector=function(t){return e.apply(this,arguments)};var o=t(Element.prototype.querySelectorAll);Element.prototype.querySelectorAll=function(t){return o.apply(this,arguments)}}()}}();var q=function t(){var n=arguments.length>0&&void 0!==arguments[0]?arguments[0]:x;if(!(this instanceof t))return new t(n);this.options={},R(this.options,x,n),L(this)};return q.init=function(t){return console.warn("Depreciated: Macy.init will be removed in v3.0.0 opt to use Macy directly like so Macy({ /*options here*/ }) "),new q(t)},q.prototype.recalculateOnImageLoad=function(){var t=arguments.length>0&&void 0!==arguments[0]&&arguments[0];return e(this,f("img",this.container),!t)},q.prototype.runOnImageLoad=function(t){var n=arguments.length>1&&void 0!==arguments[1]&&arguments[1],o=f("img",this.container);return this.on(this.constants.EVENT_IMAGE_COMPLETE,t),n&&this.on(this.constants.EVENT_IMAGE_LOAD,t),e(this,o,n)},q.prototype.recalculate=function(){var t=this,n=arguments.length>0&&void 0!==arguments[0]&&arguments[0],e=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];return e&&this.queue.clear(),this.queue.add(function(){return V(t,n,e)})},q.prototype.remove=function(){window.removeEventListener("resize",this.resizer),v(this.container.children,function(t){t.removeAttribute("data-macy-complete"),t.removeAttribute("style")}),this.container.removeAttribute("style")},q.prototype.reInit=function(){this.recalculate(!0,!0),this.emit(this.constants.EVENT_INITIALIZED),window.addEventListener("resize",this.resizer),this.container.style.position="relative"},q.prototype.on=function(t,n){this.events.on(t,n)},q.prototype.emit=function(t,n){this.events.emit(t,n)},q.constants={EVENT_INITIALIZED:"macy.initialized",EVENT_RECALCULATED:"macy.recalculated",EVENT_IMAGE_LOAD:"macy.image.load",EVENT_IMAGE_ERROR:"macy.image.error",EVENT_IMAGE_COMPLETE:"macy.images.complete",EVENT_RESIZE:"macy.resize"},q.prototype.constants=q.constants,q});
+/* Macy.js - v2.3.0 */
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.Macy = factory());
+}(this, (function () { 'use strict';
+
+/**
+ * Element Factory
+ * @param  {String} parameter       - Element Selector
+ * @param  {HTMLElement} context    - The parent to find the selector in
+ * @return {HTMLElement/HTMLCollection}
+ */
+var $e = function $e(parameter, context) {
+  if (!(this instanceof $e)) {
+    return new $e(parameter, context);
+  }
+
+  if (parameter instanceof HTMLElement) {
+    return parameter;
+  }
+
+  // Allow for spaces before or after
+  parameter = parameter.replace(/^\s*/, '').replace(/\s*$/, '');
+
+  if (context) {
+    return this.byCss(parameter, context);
+  }
+
+  for (var key in this.selectors) {
+    // Reusing it to save space
+    context = key.split('/');
+    if (new RegExp(context[1], context[2]).test(parameter)) {
+      return this.selectors[key](parameter);
+    }
+  }
+
+  return this.byCss(parameter);
+};
+
+/**
+ * Get an element by using querySelectorAll
+ * @param  {String} parameter       - Element Selector
+ * @param  {HTMLElement} context    - The parent to find the selector in
+ * @return {NodeList}
+ */
+$e.prototype.byCss = function (parameter, context) {
+  return (context || document).querySelectorAll(parameter);
+};
+
+$e.prototype.selectors = {};
+
+/**
+ * Get an element by using getElementsByClassName
+ * @param  {String} param   - Element Selector
+ * @return {HTMLCollection}
+ */
+$e.prototype.selectors[/^\.[\w\-]+$/] = function (param) {
+  return document.getElementsByClassName(param.substring(1));
+};
+
+/**
+ * Get an element by using getElementsByTagName
+ * @param  {String} param   - Element Selector
+ * @return {HTMLCollection}       [description]
+ */
+$e.prototype.selectors[/^\w+$/] = function (param) {
+  return document.getElementsByTagName(param);
+};
+
+/**
+ * Get an element by using getElementsByTagName
+ * @param  {String} param   - Element Selector
+ * @return {HTMLElement}
+ */
+$e.prototype.selectors[/^\#[\w\-]+$/] = function (param) {
+  return document.getElementById(param.substring(1));
+};
+
+/**
+ * Waits until wait stops being called before calling desired function
+ * @param  {Function} func  - Function to run after the Wait stops being called
+ * @param  {Integer}  delta - Time to wait after wait call to run the function
+ * @return {Function}       - function that runs the desired function after it has stopped being called
+ */
+function wait(func, delta) {
+  var to = void 0;
+
+  return function () {
+    if (to) {
+      clearTimeout(to);
+    }
+
+    to = setTimeout(func, delta);
+  };
+}
+
+var foreach = function foreach(iterable, callback) {
+  var i = iterable.length,
+      len = i;
+
+  while (i--) {
+    callback(iterable[len - i - 1]);
+  }
+};
+
+function map(iterable, callback) {
+  var i = iterable.length,
+      len = i;
+  var returns = [];
+
+  while (i--) {
+    returns.push(callback(iterable[len - i - 1]));
+  }
+
+  return returns;
+}
+
+var Queue = function Queue() {
+  var events = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+  this.running = false;
+  this.events = [];
+  this.add(events);
+};
+
+/**
+ * Run all the events one after the other.
+ */
+Queue.prototype.run = function () {
+  if (!this.running && this.events.length > 0) {
+    var fn = this.events.shift();
+    this.running = true;
+    fn();
+    this.running = false;
+
+    this.run();
+  }
+};
+
+/**
+ * Add a event to the queue and try to run the que
+ * @param event {Mixed} a single function or an array of functions
+ */
+Queue.prototype.add = function () {
+  var _this = this;
+
+  var event = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+  if (!event) {
+    return false;
+  }
+
+  if (Array.isArray(event)) {
+    return foreach(event, function (evt) {
+      return _this.add(evt);
+    });
+  }
+
+  this.events.push(event);
+  this.run();
+};
+
+/**
+ * Clear all events from the queue
+ */
+Queue.prototype.clear = function () {
+  this.events = [];
+};
+
+var Event = function Event(instance) {
+  var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  this.instance = instance;
+  this.data = data;
+
+  return this;
+};
+
+/**
+ * Event manager
+ * @param instance {Function/boolean}
+ * @constructor
+ */
+var EventManager = function EventManager() {
+  var instance = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+  this.events = {};
+  this._once = {};
+  this.instance = instance;
+};
+
+/**
+ * Event listener for macy events
+ * @param key {String/boolean} - Event name to listen to
+ * @param func {Function/boolean} - Function to be called when event happens
+ */
+EventManager.prototype.on = function () {
+  var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var func = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  if (!key || !func) {
+    return false;
+  }
+
+  if (!Array.isArray(this.events[key])) {
+    this.events[key] = [];
+  }
+
+  return this.events[key].push(func);
+};
+
+/**
+ * Removes event
+ * @param key {String/boolean} - Event name to be removed
+ * @param func {Function/boolean} - Function to be called when event happens
+ */
+EventManager.prototype.off = function () {
+  var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var func = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  if (!key || !func) {
+    return false;
+  }
+
+  if (!Array.isArray(this.events[key])) {
+    this.events[key] = [];
+  }
+
+  var listeners = this.events[key];
+  if (listeners !== undefined) {
+    var foundAt = -1;
+    for (var i = 0, len = listeners.length; i < len && foundAt === -1; i++) {
+      if (listeners[i] === func) {
+        foundAt = i;
+      }
+    }
+
+    if (foundAt >= 0) {
+      listeners.splice(foundAt, 1);
+    }
+  }
+};
+
+/**
+ * Event listener for macy events only once!
+ * @param key {String/boolean} - Event name to listen to
+ * @param func {Function/boolean} - Function to be called when event happens
+ */
+EventManager.prototype.once = function () {
+  var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var func = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  if (!key || !func) {
+    return false;
+  }
+
+  if (!Array.isArray(this._once[key])) {
+    this._once[key] = [];
+  }
+
+  return this._once[key].push(func);
+};
+
+/**
+ * Emit an event to macy.
+ * @param key {String/boolean} - Event name to listen to
+ * @param data {Object} - Extra data to be passed to the event object that is passed to the event listener.
+ */
+EventManager.prototype.emit = function () {
+  var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  if (!key || !Array.isArray(this.events[key])) {
+    return false;
+  }
+
+  console.log('emit', key);
+  var evt = new Event(this.instance, data);
+  foreach(this.events[key], function (fn) {
+    return fn(evt);
+  });
+  foreach(this._once[key], function (fn) {
+    return fn(evt);
+  });
+  this._once[key] = [];
+};
+
+var imageHasLoaded = function imageHasLoaded(img) {
+  return !('naturalHeight' in img && img.naturalHeight + img.naturalWidth === 0) || img.width + img.height !== 0;
+};
+
+/**
+ * Returns a promise the emits events to macy context if loaded/errors
+ * @param ctx {Object} - Macy instance
+ * @param image {Node} - Image Element
+ * @param emitOnLoad {Boolean} - Should promise fire image load event
+ * @returns {Promise}
+ */
+var promise = function promise(ctx, image) {
+  var emitOnLoad = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+  return new Promise(function (resolve, reject) {
+    if (image.complete) {
+
+      if (!imageHasLoaded(image)) {
+        return reject(image);
+      }
+
+      return resolve(image);
+    }
+
+    image.addEventListener('load', function () {
+      if (imageHasLoaded(image)) {
+        return resolve(image);
+      }
+
+      return reject(image);
+    });
+
+    image.addEventListener('error', function () {
+      return reject(image);
+    });
+  }).then(function (img) {
+    if (emitOnLoad) {
+      ctx.emit(ctx.constants.EVENT_IMAGE_LOAD, { img: img });
+    }
+  }).catch(function (img) {
+    return ctx.emit(ctx.constants.EVENT_IMAGE_ERROR, { img: img });
+  });
+};
+
+/**
+ * Returns an array of promises for images loaded
+ * @param ctx {Object} - Macy instance
+ * @param images {NodeList}
+ * @param emitOnLoad {Boolean} - Should promise fire image load event
+ * @returns {Array}
+ */
+var getImagePromises = function getImagePromises(ctx, images) {
+  var emitOnLoad = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+  return map(images, function (image) {
+    return promise(ctx, image, emitOnLoad);
+  });
+};
+
+/**
+ * Returns a promise that emits an images complete event when all images are loaded.
+ * @param ctx {Object} - Macy instance
+ * @param images {NodeList}
+ * @param emitOnLoad {Boolean} - Should promise fire image load event
+ */
+var imageLoaderPromise = function imageLoaderPromise(ctx, images) {
+  var emitOnLoad = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  return Promise.all(getImagePromises(ctx, images, emitOnLoad)).then(function () {
+    ctx.emit(ctx.constants.EVENT_IMAGE_COMPLETE);
+  });
+};
+
+/**
+ * Sets up the image loading promise.
+ * @param ctx {Object} - Macy instance
+ * @param imgs {NodeList}
+ * @param during {Boolean} - Should promise fire image load event
+ */
+function imagesLoadedNew(ctx, imgs) {
+  var during = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+  imageLoaderPromise(ctx, imgs, during);
+}
+
+var createResizeEvent = function createResizeEvent(ctx) {
+  return wait(function () {
+    ctx.emit(ctx.constants.EVENT_RESIZE);
+    ctx.queue.add(function () {
+      return ctx.recalculate(true, true);
+    });
+  }, 100);
+};
+
+/**
+ * Setup the containing element with the correct styles and attaches it to the macy instance
+ * @param ctx {Object} - Macy instance
+ */
+var setupContainer = function setupContainer(ctx) {
+  // this.options = opts;
+  ctx.container = $e(ctx.options.container);
+
+  // Checks if container element exists
+  if (ctx.container instanceof $e || !ctx.container) {
+    return ctx.options.debug ? console.error('Error: Container not found') : false;
+  }
+
+  // Remove container selector from the options
+  delete ctx.options.container;
+
+  if (ctx.container.length) {
+    ctx.container = ctx.container[0];
+  }
+
+  ctx.container.style.position = 'relative';
+};
+
+/**
+ * Generates the basic state objects for macy to run
+ * @param ctx {Object} - Macy instance
+ */
+var setupState = function setupState(ctx) {
+  ctx.queue = new Queue();
+  ctx.events = new EventManager(ctx);
+  ctx.rows = [];
+  ctx.resizer = createResizeEvent(ctx);
+};
+
+/**
+ * Sets up event listeners for resize and image loading (if required)
+ * @param ctx {Object} - Macy instance
+ */
+var setupEventListeners = function setupEventListeners(ctx) {
+  var imgs = $e('img', ctx.container);
+
+  window.addEventListener('resize', ctx.resizer);
+  ctx.on(ctx.constants.EVENT_IMAGE_LOAD, function () {
+    return ctx.recalculate(false, false);
+  });
+  ctx.on(ctx.constants.EVENT_IMAGE_COMPLETE, function () {
+    return ctx.recalculate(true, true);
+  });
+
+  if (!ctx.options.useOwnImageLoader) {
+    imagesLoadedNew(ctx, imgs, !ctx.options.waitForImages);
+  }
+
+  ctx.emit(ctx.constants.EVENT_INITIALIZED);
+};
+
+var setup = function setup(ctx) {
+  setupContainer(ctx);
+  setupState(ctx);
+  setupEventListeners(ctx);
+};
+
+/**
+ * Checks if item is an object
+ * @param obj {Mixed}
+ */
+var isObject = function isObject(obj) {
+  return obj === Object(obj) && Object.prototype.toString.call(obj) !== '[object Array]';
+};
+
+var replaceOptionsResponsively = function replaceOptionsResponsively(tempOpts, responsiveOptions) {
+  if (!isObject(tempOpts)) {
+    responsiveOptions.columns = tempOpts;
+  }
+
+  if (isObject(tempOpts) && tempOpts.columns) {
+    responsiveOptions.columns = tempOpts.columns;
+  }
+
+  if (isObject(tempOpts) && tempOpts.margin && !isObject(tempOpts.margin)) {
+    responsiveOptions.margin = {
+      x: tempOpts.margin,
+      y: tempOpts.margin
+    };
+  }
+
+  if (isObject(tempOpts) && tempOpts.margin && isObject(tempOpts.margin) && tempOpts.margin.x) {
+    responsiveOptions.margin.x = tempOpts.margin.x;
+  }
+
+  if (isObject(tempOpts) && tempOpts.margin && isObject(tempOpts.margin) && tempOpts.margin.y) {
+    responsiveOptions.margin.y = tempOpts.margin.y;
+  }
+};
+
+/**
+ * Return the current spacing options based on document size, in a mobile first manner.
+ * @param  {Object} args - This passes the macy instance options, responsiveOptions object, the width keys and document width.
+ * @return {Object}         - Object containing the current spacing options
+ */
+function getOptionsAsMobileFirst(_ref) {
+  var options = _ref.options,
+      responsiveOptions = _ref.responsiveOptions,
+      keys = _ref.keys,
+      docWidth = _ref.docWidth;
+
+  var tempOpts = void 0;
+
+  for (var i = 0; i < keys.length; i++) {
+    var widths = parseInt(keys[i], 10);
+
+    if (docWidth >= widths) {
+      tempOpts = options.breakAt[widths];
+      replaceOptionsResponsively(tempOpts, responsiveOptions);
+    }
+  }
+
+  return responsiveOptions;
+}
+
+/**
+ * Return the current spacing options based on document size, in a desktop first manner.
+ * @param  {Object} args - This passes the macy instance options, responsiveOptions object, the width keys and document width.
+ * @return {Object}         - Object containing the current spacing options
+ */
+function getOptionsAsDesktopFirst(_ref2) {
+  var options = _ref2.options,
+      responsiveOptions = _ref2.responsiveOptions,
+      keys = _ref2.keys,
+      docWidth = _ref2.docWidth;
+
+  var tempOpts = void 0;
+
+  for (var i = keys.length - 1; i >= 0; i--) {
+    var widths = parseInt(keys[i], 10);
+
+    if (docWidth <= widths) {
+      tempOpts = options.breakAt[widths];
+      replaceOptionsResponsively(tempOpts, responsiveOptions);
+    }
+  }
+
+  return responsiveOptions;
+}
+
+/**
+ * Return the current spacing options based on document size.
+ * @param  {Object} options - Macy instance's options
+ * @return {Object}         - Object containing the current spacing options
+ */
+function getResponsiveOptions(options) {
+  var docWidth = document.body.clientWidth;
+  var responsiveOptions = {
+    columns: options.columns
+  };
+
+  if (!isObject(options.margin)) {
+    responsiveOptions.margin = {
+      x: options.margin,
+      y: options.margin
+    };
+  } else {
+    responsiveOptions.margin = {
+      x: options.margin.x,
+      y: options.margin.y
+    };
+  }
+
+  var keys = Object.keys(options.breakAt);
+
+  if (options.mobileFirst) {
+    return getOptionsAsMobileFirst({ options: options, responsiveOptions: responsiveOptions, keys: keys, docWidth: docWidth });
+  }
+
+  return getOptionsAsDesktopFirst({ options: options, responsiveOptions: responsiveOptions, keys: keys, docWidth: docWidth });
+}
+
+function getCurrentColumns(options) {
+  var noOfColumns = getResponsiveOptions(options).columns;
+  return noOfColumns;
+}
+
+/**
+ * Return the current margin dimensions macy should use
+ * @param  {Object} options - Macy instance's options
+ * @return {Object}         - Object containing x & y margins
+ */
+function getCurrentMargin(options) {
+  var margin = getResponsiveOptions(options).margin;
+  return margin;
+}
+
+/**
+ * Get the width of each column based on the number of columns
+ * @param  {Object} options           - Macy instance's options
+ * @param  {Boolean} marginsIncluded  - Include margins into the calculations
+ * @return {String}                   - The correct number css style for column width
+ */
+function getWidths(options) {
+  var marginsIncluded = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+  var noOfColumns = getCurrentColumns(options);
+  var margins = getCurrentMargin(options).x;
+  var width = 100 / noOfColumns;
+
+  if (!marginsIncluded) {
+    return width;
+  }
+
+  if (noOfColumns === 1) {
+    return '100%';
+  }
+
+  margins = (noOfColumns - 1) * margins / noOfColumns;
+  return 'calc(' + width + '% - ' + margins + 'px)';
+}
+
+/**
+ * Get the left position based on which column and column width
+ * @param  {Macy}    ctx  - Macy instance
+ * @param  {Integer} col  - Current Number of Columns
+ * @return {String}       - The correct number css style for column position
+ */
+function getLeftPosition(ctx, col) {
+  var noOfColumns = getCurrentColumns(ctx.options);
+  var totalLeft = 0;
+  var margin = void 0,
+      str = void 0,
+      baseMargin = void 0;
+
+  col++;
+
+  if (col === 1) {
+    return 0;
+  }
+
+  baseMargin = getCurrentMargin(ctx.options).x;
+
+  margin = (baseMargin - (noOfColumns - 1) * baseMargin / noOfColumns) * (col - 1);
+  totalLeft += getWidths(ctx.options, false) * (col - 1);
+  str = 'calc(' + totalLeft + '% + ' + margin + 'px)';
+
+  return str;
+}
+
+/**
+ * Sets the containers height based on the last item in the container
+ * @param {Macy} ctx  - Macy instance
+ */
+function setContainerHeight(ctx) {
+  var largest = 0;
+  var container = ctx.container,
+      rows = ctx.rows;
+
+
+  foreach(rows, function (row) {
+    largest = row > largest ? row : largest;
+  });
+
+  container.style.height = largest + 'px';
+}
+
+/**
+ * Get Element computed style
+ * @param  {HTMLElement} element  - Element
+ * @param  {String}      property - Property to fetch
+ * @return {String}               - Desired Element Property
+ */
+var prop = (function (element, property) {
+  return window.getComputedStyle(element, null).getPropertyValue(property);
+});
+
+var setUpRows = function setUpRows(ctx, cols) {
+  var refresh = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+  if (!ctx.lastcol) {
+    ctx.lastcol = 0;
+  }
+
+  if (ctx.rows.length < 1) {
+    refresh = true;
+  }
+
+  // Reset rows
+  if (refresh) {
+    ctx.rows = [];
+    ctx.cols = [];
+    ctx.lastcol = 0;
+
+    for (var i = cols - 1; i >= 0; i--) {
+      ctx.rows[i] = 0;
+      ctx.cols[i] = getLeftPosition(ctx, i);
+    }
+
+    return;
+  }
+
+  if (ctx.tmpRows) {
+    ctx.rows = [];
+
+    for (var i = cols - 1; i >= 0; i--) {
+      ctx.rows[i] = ctx.tmpRows[i];
+    }
+    return;
+  }
+
+  ctx.tmpRows = [];
+  for (var i = cols - 1; i >= 0; i--) {
+    ctx.tmpRows[i] = ctx.rows[i];
+  }
+};
+
+/**
+ * A Sorting method when trueOrder = false
+ * @param  {Macy}      ctx              - Macy Instance
+ * @param  {NodeList}  $eles            - Element List to sort
+ * @param  {Boolean}   refresh          - Show all columns and rows be refreshed and recalculated
+ * @param  {Boolean}   markasComplete   - Mark elements as complete
+ */
+function shuffle(ctx, $eles) {
+  var refresh = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  var markasComplete = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+
+  var cols = getCurrentColumns(ctx.options);
+  var margin = getCurrentMargin(ctx.options).y;
+  setUpRows(ctx, cols, refresh);
+
+  foreach($eles, function (ele) {
+    var smallest = 0;
+    var eleHeight = parseInt(ele.offsetHeight, 10);
+
+    if (isNaN(eleHeight)) return;
+
+    ctx.rows.forEach(function (v, k) {
+      if (v < ctx.rows[smallest]) {
+        smallest = k;
+      }
+    });
+
+    ele.style.position = 'absolute';
+    ele.style.top = ctx.rows[smallest] + 'px';
+    ele.style.left = '' + ctx.cols[smallest];
+    ctx.rows[smallest] += !isNaN(eleHeight) ? eleHeight + margin : 0;
+
+    if (markasComplete) {
+      ele.dataset.macyComplete = 1;
+    }
+  });
+
+  if (markasComplete) {
+    ctx.tmpRows = null;
+  }
+
+  setContainerHeight(ctx);
+}
+
+/**
+ * A Sorting method when trueOrder = true
+ * @param  {Macy}      ctx              - Macy Instance
+ * @param  {NodeList}  $eles            - Element List to sort
+ * @param  {Boolean}   refresh          - Show all columns and rows be refreshed and recalculated
+ * @param  {Boolean}   markasComplete   - Mark elements as complete
+ */
+function sort(ctx, $eles) {
+  var refresh = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  var markasComplete = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+
+  var cols = getCurrentColumns(ctx.options);
+  var margin = getCurrentMargin(ctx.options).y;
+  setUpRows(ctx, cols, refresh);
+
+  foreach($eles, function (ele) {
+
+    if (ctx.lastcol === cols) {
+      ctx.lastcol = 0;
+    }
+
+    var eleHeight = prop(ele, 'height');
+    eleHeight = parseInt(ele.offsetHeight, 10);
+
+    if (isNaN(eleHeight)) return;
+    ele.style.position = 'absolute';
+    ele.style.top = ctx.rows[ctx.lastcol] + 'px';
+    ele.style.left = '' + ctx.cols[ctx.lastcol];
+    ctx.rows[ctx.lastcol] += !isNaN(eleHeight) ? eleHeight + margin : 0;
+    ctx.lastcol += 1;
+
+    if (markasComplete) {
+      ele.dataset.macyComplete = 1;
+    }
+  });
+
+  if (markasComplete) {
+    ctx.tmpRows = null;
+  }
+
+  setContainerHeight(ctx);
+}
+
+var calculate = function calculate(ctx) {
+  var refresh = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  var loaded = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+  var children = refresh ? ctx.container.children : $e(':scope > *:not([data-macy-complete="1"])', ctx.container);
+  var eleWidth = getWidths(ctx.options);
+
+  foreach(children, function (child) {
+    if (refresh) {
+      child.dataset.macyComplete = 0;
+    }
+    child.style.width = eleWidth;
+  });
+
+  if (ctx.options.trueOrder) {
+    sort(ctx, children, refresh, loaded);
+    return ctx.emit(ctx.constants.EVENT_RECALCULATED); //cols.sort(ctx, children, refresh, loaded);
+  }
+
+  shuffle(ctx, children, refresh, loaded);
+  return ctx.emit(ctx.constants.EVENT_RECALCULATED); //cols.shuffle(ctx, children, refresh, loaded);
+};
+
+/**
+ * Polyfill from https://github.com/jonathantneal/element-qsa-scope
+ */
+/* eslint-disable */
+var init$1 = function init() {
+  try {
+    // test for scope support
+    document.createElement('a').querySelector(':scope *');
+  } catch (error) {
+    (function () {
+      // scope regex
+      var scope = /:scope\b/gi;
+
+      // polyfilled <Element>.querySelector
+      var querySelectorWithScope = polyfill(Element.prototype.querySelector);
+
+      Element.prototype.querySelector = function querySelector(selectors) {
+        return querySelectorWithScope.apply(this, arguments);
+      };
+
+      // polyfilled <Element>.querySelectorAll
+      var querySelectorAllWithScope = polyfill(Element.prototype.querySelectorAll);
+
+      Element.prototype.querySelectorAll = function querySelectorAll(selectors) {
+        return querySelectorAllWithScope.apply(this, arguments);
+      };
+
+      function polyfill(originalQuerySelector) {
+        return function (selectors) {
+          // whether selectors contain :scope
+          var hasScope = selectors && scope.test(selectors);
+
+          if (hasScope) {
+            // element id
+            var id = this.getAttribute('id');
+
+            if (!id) {
+              // update id if falsey or missing
+              this.id = 'q' + Math.floor(Math.random() * 9000000) + 1000000;
+            }
+
+            // modify arguments
+            arguments[0] = selectors.replace(scope, '#' + this.id);
+
+            // result of the original query selector
+            var elementOrNodeList = originalQuerySelector.apply(this, arguments);
+
+            if (id === null) {
+              // remove id if missing
+              this.removeAttribute('id');
+            } else if (!id) {
+              // restore id if falsey
+              this.id = id;
+            }
+
+            return elementOrNodeList;
+          } else {
+            // result of the original query sleector
+            return originalQuerySelector.apply(this, arguments);
+          }
+        };
+      }
+    })();
+  }
+};
+
+/* eslint-enable */
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var defaults = {
+  columns: 4,
+  margin: 2,
+  trueOrder: false,
+  waitForImages: false,
+  useImageLoader: true,
+  breakAt: {},
+  useOwnImageLoader: false,
+  onInit: false
+};
+
+init$1();
+
+/**
+ * Masonary Factory
+ * @param {Object} opts - The configuration object for macy.
+ */
+var Macy = function Macy() {
+  var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaults;
+
+  /**
+   * Create instance of macy if not instantiated with new Macy
+   */
+  if (!(this instanceof Macy)) {
+    return new Macy(opts);
+  }
+
+  this.options = {};
+  _extends(this.options, defaults, opts);
+
+  setup(this);
+};
+
+Macy.init = function (options) {
+  console.warn('Depreciated: Macy.init will be removed in v3.0.0 opt to use Macy directly like so Macy({ /*options here*/ }) ');
+  return new Macy(options);
+};
+
+/**
+ * Public method for recalculating image positions when the images have loaded.
+ * @param  {Boolean} waitUntilFinish - if true it will not recalculate until all images are finished loading
+ * @param  {Boolean} refresh         - If true it will recalculate the entire container instead of just new elements.
+ */
+Macy.prototype.recalculateOnImageLoad = function () {
+  var waitUntilFinish = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+  var imgs = $e('img', this.container);
+  return imagesLoadedNew(this, imgs, !waitUntilFinish);
+};
+
+/**
+ * Run a function on every image load or once all images are loaded
+ * @param  {Function}  func      - Function to run on image load
+ * @param  {Boolean} everyLoad   - If true it will run everytime an image loads
+ */
+Macy.prototype.runOnImageLoad = function (func) {
+  var everyLoad = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  var imgs = $e('img', this.container);
+  this.on(this.constants.EVENT_IMAGE_COMPLETE, func);
+
+  if (everyLoad) {
+    this.on(this.constants.EVENT_IMAGE_LOAD, func);
+  }
+
+  return imagesLoadedNew(this, imgs, everyLoad);
+};
+
+/**
+ * Recalculates masonory positions
+ * @param  {Boolean} refresh - Recalculates All elements within the container
+ * @param  {Boolean} loaded  - When true it sets the recalculated elements to be marked as complete
+ */
+Macy.prototype.recalculate = function () {
+  var _this = this;
+
+  var refresh = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var loaded = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+  if (loaded) {
+    this.queue.clear();
+  }
+
+  return this.queue.add(function () {
+    return calculate(_this, refresh, loaded);
+  });
+};
+
+/**
+ * Destroys macy instance
+ */
+Macy.prototype.remove = function () {
+  foreach(this.container.children, function (child) {
+    child.removeAttribute('data-macy-complete');
+    child.removeAttribute('style');
+  });
+
+  this.container.removeAttribute('style');
+};
+
+/**
+ * ReInitializes the macy instance using the already defined options
+ */
+Macy.prototype.reInit = function () {
+  this.recalculate(true, true);
+  this.emit(this.constants.EVENT_INITIALIZED);
+  this.container.style.position = 'relative';
+};
+
+/**
+ * Event listener for macy events
+ * @param key {String} - Event name to listen to
+ * @param func {Function} - Function to be called when event happens
+ */
+Macy.prototype.on = function (key, func) {
+  this.events.on(key, func);
+};
+
+/**
+ * Event listener for macy events
+ * @param key {String} - Event name to remove
+ * @param func {Function} - Function that was added
+ */
+Macy.prototype.off = function (key, func) {
+  this.events.off(key, func);
+};
+
+/**
+ * Event listener for macy events only once!
+ * @param key {String} - Event name to listen to
+ * @param func {Function} - Function to be called when event happens
+ */
+Macy.prototype.once = function (key, func) {
+  this.events.once(key, func);
+};
+
+/**
+ * Emit an event to macy.
+ * @param key {String} - Event name to listen to
+ * @param data {Object} - Extra data to be passed to the event object that is passed to the event listener.
+ */
+Macy.prototype.emit = function (key, data) {
+  this.events.emit(key, data);
+};
+
+/**
+ * Macy constants
+ * @type {{EVENT_INITIALIZED: string, EVENT_RECALCULATED: string, EVENT_IMAGE_LOAD: string, EVENT_IMAGE_ERROR: string, EVENT_IMAGE_COMPLETE: string, EVENT_RESIZE: string}}
+ */
+Macy.constants = {
+  EVENT_INITIALIZED: 'macy.initialized',
+  EVENT_RECALCULATED: 'macy.recalculated',
+  EVENT_IMAGE_LOAD: 'macy.image.load',
+  EVENT_IMAGE_ERROR: 'macy.image.error',
+  EVENT_IMAGE_COMPLETE: 'macy.images.complete',
+  EVENT_RESIZE: 'macy.resize'
+};
+
+Macy.prototype.constants = Macy.constants;
+
+/**
+ * Export Macy
+ */
+// module.exports = Macy;
+
+return Macy;
+
+})));

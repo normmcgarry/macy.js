@@ -21,7 +21,7 @@ const Event = function (instance, data = {}) {
  */
 const EventManager = function (instance = false) {
   this.events = {};
-  this.once = {};
+  this._once = {};
   this.instance = instance;
 };
 
@@ -43,8 +43,8 @@ EventManager.prototype.on = function (key = false, func = false) {
 };
 
 /**
- * Event listener for macy events
- * @param key {String/boolean} - Event name to listen to
+ * Removes event
+ * @param key {String/boolean} - Event name to be removed
  * @param func {Function/boolean} - Function to be called when event happens
  */
 EventManager.prototype.off = function (key = false, func = false) {
@@ -55,7 +55,7 @@ EventManager.prototype.off = function (key = false, func = false) {
   if (!Array.isArray(this.events[key])) {
     this.events[key] = [];
   }
-  
+
   var listeners = this.events[key];
   if (listeners !== undefined) {
     var foundAt = -1;
@@ -73,7 +73,7 @@ EventManager.prototype.off = function (key = false, func = false) {
 };
 
 /**
- * Event listener for macy events
+ * Event listener for macy events only once!
  * @param key {String/boolean} - Event name to listen to
  * @param func {Function/boolean} - Function to be called when event happens
  */
@@ -82,11 +82,11 @@ EventManager.prototype.once = function (key = false, func = false) {
     return false;
   }
 
-  if (!Array.isArray(this.once[key])) {
-    this.once[key] = [];
+  if (!Array.isArray(this._once[key])) {
+    this._once[key] = [];
   }
 
-  return this.once[key].push(func);
+  return this._once[key].push(func);
 };
 
 
@@ -100,10 +100,11 @@ EventManager.prototype.emit = function (key = false, data = {}) {
     return false;
   }
 
+  console.log('emit', key);
   const evt = new Event(this.instance, data);
   foreach(this.events[key], (fn) => fn(evt));
-  foreach(this.once[key], (fn) => fn(evt));
-  this.once[key] = [];
+  foreach(this._once[key], (fn) => fn(evt));
+  this._once[key] = [];
 };
 
 export default EventManager;
